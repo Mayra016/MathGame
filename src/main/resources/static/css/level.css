@@ -1,0 +1,103 @@
+
+
+body{
+	display: flex;
+	flex-direction: column;
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: rgb(55,55,55);
+}
+
+button{
+	border: none;
+}
+
+.container{
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	align-items: center;
+	margin: auto;
+	width: 100%;
+	height: 100%;
+	background-color: rgb(55,55,55);
+}
+
+/* HEADER-BAR */
+
+.header-bar{
+	display: flex;
+	flex-direction: row;
+	text-align: center;
+	padding-top: 10px;
+	gap: 100px;
+	
+}
+
+.menu-btn{
+	display: flex;
+	flex-direction: row;
+}
+
+.menu-btn:hover{
+	background-color: rgb(255, 255, 255, 0.8);
+}
+
+.menu-btn img{
+	width: 40px;
+	height: 40px;
+}
+
+.menu-btn h5, .score h5, .lifes h5{
+	padding-top: 12px;
+	padding-left: 5px;
+}
+
+.menu-btn, .score, .lifes{
+	background-color: rgb(255,255,255, 0.5);
+	border-radius: 10px;
+	padding: 5px 10px;
+}
+
+h5{
+	font-size: 15px;
+}
+
+.lifes, .score{
+	display: flex;
+	flex-direction: row;
+}
+
+/* GAME */
+
+.game-level{
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	align-items: center;
+	background-color: rgb(255,255,255, 0.5);
+	border-radius: 10px;
+	padding: 5px 10px;
+	padding-top: 20px;	
+	margin-top: 50px;
+	padding-bottom: 30px;
+	width: 50%;
+	height: 80%;
+}
+
+.game-level button{
+	margin-top: 20px;
+	border-radius: 10px;
+	padding: 5px 10px;
+}
+
+.red{
+	background-color: rgb(255,0,0, 0.5);
+}
+
+input{
+	border-radius: 10px;
+}
+
