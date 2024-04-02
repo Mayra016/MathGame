@@ -24,6 +24,7 @@ public class AppController {
 	
 	@GetMapping("/level")
 	public String level(Model model) {
+		game = new GameModel();
 		model.addAttribute("game", game);
 		return "level";
 	}

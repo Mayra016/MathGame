@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface GameI {
 	// GETTER AND SETTERS 
-	public List<Integer> getLevelNumbers();
-	public void setLevelNumbers(List<Integer> newNums);
+	public List<Double> getLevelNumbers();
+	public void setLevelNumbers(List<Double> newNums);
 	
 	public char[] getSigns();
 	public void setSigns(char[] newSigns);

@@ -7,7 +7,7 @@ import java.util.Random;
 import com.MathGame.Interfaces.GameI;
 
 public class GameModel implements GameI {
-	private List<Integer> levelNumbers = new ArrayList<>();
+	private List<Double> levelNumbers = new ArrayList<>();
 	private char[] signs = {'+', '_', '/', 'x'};
 	private char[] levelSigns;
 	private short level;
@@ -29,13 +29,13 @@ public class GameModel implements GameI {
 
 
 	@Override
-	public List<Integer> getLevelNumbers() {
+	public List<Double> getLevelNumbers() {
 		return this.levelNumbers;
 	}
 
 
 	@Override
-	public void setLevelNumbers(List<Integer> newNums) {
+	public void setLevelNumbers(List<Double> newNums) {
 		this.levelNumbers = newNums;
 		
 	}
@@ -171,25 +171,25 @@ public class GameModel implements GameI {
 		byte i = 0;
 		if (this.level <= 10) {
 			for (i = 0; i <= 1; i++) {
-				levelNumbers.add(generator.nextInt(11));		
+				levelNumbers.add(Double.valueOf(generator.nextInt(11)));		
 			}
 		}	
 
 		if (this.level > 10 && this.level <= 20) {
 			for (i = 0; i <= 2; i++) {
-				levelNumbers.add(generator.nextInt(11));
+				levelNumbers.add(Double.valueOf(generator.nextInt(11)));
 			}
 		}
 		
 		if (this.level > 20 && this.level <= 40) {
 			for (i = 0; i <= 3; i++) {
-				levelNumbers.add(generator.nextInt(11));
+				levelNumbers.add(Double.valueOf(generator.nextInt(11)));
 			}
 		}
 		
 		if (this.level > 40) {
 			for (i = 0; i <= 4; i++) {
-				levelNumbers.add(generator.nextInt(11));
+				levelNumbers.add(Double.valueOf(generator.nextInt(11)));
 			}
 		}
 		
@@ -231,7 +231,7 @@ public class GameModel implements GameI {
 		
 		// Build equation
 		for (i = 0; i < this.levelNumbers.size(); i++) {
-			equation.append(this.levelNumbers.get(i));
+			equation.append(decimal(String.valueOf(this.levelNumbers.get(i))));
 			numbers.add(Double.valueOf(this.levelNumbers.get(i)));
 			System.out.println(this.levelNumbers.get(i));
 			
@@ -251,27 +251,38 @@ public class GameModel implements GameI {
 			byte numIndex = (byte) 0;
 			if (equation.length() >= 4) {
 				numIndex = (signIndex >= 2) ? (byte) (signIndex - 1) : (byte) 0;				
+				
 			} else {
 				numIndex = (signIndex >= 2) ? (byte) (signIndex - 2) : (byte) 0;
-			}			System.out.println("numIndex= " + numIndex);
+			}	
 			
-			if (numbers.get(numIndex + 1) == 0) {
+			if (numIndex >= numbers.size() - 1) {
+				numIndex = 0;
+			}
+			System.out.println("numIndex= " + numIndex);
+			
+			if (numbers.get(numIndex + 1) == 0 || numbers.get(numIndex) == 0) {
 			    result = 0;
 			} else {
 			    result = numbers.get(numIndex) / numbers.get(numIndex + 1);
+			    result = Double.valueOf(decimal(String.valueOf(result)));
+
 			}
 			
+		    
 			System.out.println("result " + result);
 			
 			byte digitsNum1 = (byte) String.valueOf(numbers.get(numIndex)).length();
-			byte digitsNum2 = (byte) String.valueOf(numbers.get(numIndex+1)).length();
+			byte digitsNum2 = (byte) (String.valueOf(numbers.get(numIndex+1)).length() - 1);
 			numbers.set(numIndex, result);
 			System.out.println("numbers list " + numbers.get(numIndex));
 			int initialIndex = signIndex - digitsNum1 > 0 ? signIndex - digitsNum1 : 0;
+			initialIndex = initialIndex < 0 ? 0 : initialIndex;
 			
-			equation.replace(initialIndex, signIndex + digitsNum2, String.valueOf(result));
+			equation = equation.replace(initialIndex, signIndex + digitsNum2, String.valueOf(result));
             System.out.println("equation divide: " + equation.toString());
 			answer = equation.toString();
+			numbers.remove(numIndex + 1);
 		}
 		
 		while (answer.contains("x")) {
@@ -284,23 +295,31 @@ public class GameModel implements GameI {
 			}
 			System.out.println("numIndex= " + numIndex);
 			
-			if (numIndex != 1) {
-				result = numbers.get(numIndex) * numbers.get(numIndex + 1);	
-			} else {
-				result = numbers.get(0) * numbers.get(1);				
+			if (numIndex >= numbers.size() - 1) {
+				numIndex = 0;
 			}
+			
+			if(numIndex == 1) {
+				numIndex = 0;
+			}
+			
+			result = numbers.get(numIndex) * numbers.get(numIndex + 1);	
+			
+			
 			
 			System.out.println("result " + result);
 			
 			byte digitsNum1 = (byte) String.valueOf(numbers.get(numIndex)).length();
-			byte digitsNum2 = (byte) String.valueOf(numbers.get(numIndex+1)).length();
+			byte digitsNum2 = (byte) (String.valueOf(numbers.get(numIndex+1)).length() - 1);
 			numbers.set(numIndex, result);
 			System.out.println("numbers list " + numbers.get(numIndex));
 			int initialIndex = signIndex - digitsNum1 > 0 ? signIndex - digitsNum1 : 0;
+			initialIndex = initialIndex < 0 ? 0 : initialIndex;
 			
-			equation.replace(initialIndex, signIndex + digitsNum2, String.valueOf(result));
+			equation = equation.replace(initialIndex, signIndex + digitsNum2, String.valueOf(result));
             System.out.println("equation multiply: " + equation.toString());
 			answer = equation.toString();
+			numbers.remove(numIndex + 1);
 		}
 		
 		while (answer.contains("+")) {
@@ -310,21 +329,27 @@ public class GameModel implements GameI {
 				numIndex = (signIndex >= 2) ? (byte) (signIndex - 1) : (byte) 0;				
 			} else {
 				numIndex = (signIndex >= 2) ? (byte) (signIndex - 2) : (byte) 0;
-			}			System.out.println("numIndex= " + numIndex);
+			}			
+			if (numIndex >= numbers.size() - 1) {
+				numIndex = 0;
+			}
+			System.out.println("numIndex= " + numIndex);
 			
 			result = numbers.get(numIndex) + numbers.get(numIndex + 1);
-			
+		    
 			System.out.println("result " + result);
 			
 			byte digitsNum1 = (byte) String.valueOf(numbers.get(numIndex)).length();
-			byte digitsNum2 = (byte) String.valueOf(numbers.get(numIndex+1)).length();
+			byte digitsNum2 = (byte) (String.valueOf(numbers.get(numIndex+1)).length() - 1);
 			numbers.set(numIndex, result);
 			System.out.println("numbers list " + numbers.get(numIndex));
 			int initialIndex = signIndex - digitsNum1 > 0 ? signIndex - digitsNum1 : 0;
+			initialIndex = initialIndex < 0 ? 0 : initialIndex;
 			
-			equation.replace(initialIndex, signIndex + digitsNum2, String.valueOf(result));
+			equation = equation.replace(initialIndex, signIndex + digitsNum2, String.valueOf(result));
             System.out.println("equation plus: " + equation.toString());
 			answer = equation.toString();
+			numbers.remove(numIndex + 1);
 		}
 		
 		while (answer.contains("_")) {
@@ -334,28 +359,34 @@ public class GameModel implements GameI {
 				numIndex = (signIndex >= 2) ? (byte) (signIndex - 1) : (byte) 0;				
 			} else {
 				numIndex = (signIndex >= 2) ? (byte) (signIndex - 2) : (byte) 0;
-			}			System.out.println("numIndex= " + numIndex);
+			}			
+			if (numIndex >= numbers.size() - 1) {
+				numIndex = 0;
+			}
+			System.out.println("numIndex= " + numIndex);
 			
-			if (numIndex != 1) {
-				result = numbers.get(numIndex) - numbers.get(numIndex + 1);				
-			} else {
-				result = numbers.get(0) - numbers.get(1);
+			if(numIndex == 1) {
+				numIndex = 0;
 			}
 			
+			result = numbers.get(numIndex) - numbers.get(numIndex + 1);	
 			
+						
 			
 			System.out.println("result " + result);
 			
 			byte digitsNum1 = (byte) String.valueOf(numbers.get(numIndex)).length();
-			byte digitsNum2 = (byte) String.valueOf(numbers.get(numIndex+1)).length();
+			byte digitsNum2 = (byte) (String.valueOf(numbers.get(numIndex+1)).length() - 1);
 			numbers.set(numIndex, result);
 			System.out.println("numbers list " + numbers.get(numIndex));
 			int initialIndex = signIndex - digitsNum1 > 0 ? signIndex - digitsNum1 : 0;
+			initialIndex = initialIndex < 0 ? 0 : initialIndex;
 			
-			equation.replace(initialIndex, signIndex + digitsNum2, String.valueOf(result));
+			equation = equation.replace(initialIndex, signIndex + digitsNum2, String.valueOf(result));
 			
             System.out.println("equation minus: " + equation.toString());
 			answer = equation.toString();
+			numbers.remove(numIndex + 1);
 		}
 		
 		answer = decimal(answer);

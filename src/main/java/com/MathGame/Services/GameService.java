@@ -26,6 +26,7 @@ public class GameService {
 	// Compare answer
 	public boolean checkAnswer(String playerAnswer, float levelAnswer) {
 		String answerString = String.valueOf(levelAnswer);
+		
 		if (playerAnswer.endsWith(".0")) {
 			String[] answerNums = playerAnswer.split("\\.");
 			System.out.println("answerNums[0] :" + answerNums[0]);

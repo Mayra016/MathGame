@@ -19,6 +19,7 @@ public class APIController {
 	
 	GameModel game = new GameModel();
 	float gameAnswer = -999999999;
+
 	
 	@GetMapping("/getLevel")
 	public ResponseEntity<String> getLevel(@RequestParam short level, @RequestParam int score) {
@@ -42,6 +43,7 @@ public class APIController {
 	@GetMapping("/checkAnswer")
 	public ResponseEntity<String> checkAnswer(@RequestParam String playerAnswer, @RequestParam float answer) {
 		boolean result = false;
+		
 		if (gameAnswer != -999999999) {
 			result = gameService.checkAnswer(playerAnswer, gameAnswer);
 		} else {
